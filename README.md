@@ -2,7 +2,7 @@
 
 Despliega un entorno de hacking profesional para Kali Linux ejecutando solo un script.
 
-![ceti-hacking](https://github.com/user-attachments/assets/...)
+![ceti-hacking](borrar.png)
 
 ## Instalación y uso
 
