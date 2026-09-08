@@ -2,8 +2,7 @@
 
 Despliega un entorno de hacking profesional para Kali Linux ejecutando solo un script.
 
-![kalipwm-1](https://github.com/user-attachments/assets/0e11571f-7c71-416f-9bb8-32ab9c47d015)
-![kalipwm-2](https://github.com/user-attachments/assets/b67853d2-922d-4303-90a8-4fbc2564555a)
+![ceti-hacking](https://github.com/user-attachments/assets/...)
 
 ## Instalación y uso
 
@@ -11,7 +10,7 @@ Despliega un entorno de hacking profesional para Kali Linux ejecutando solo un s
 - Testado en Kali Linux 2025.1 con VMware, VirtualBox y Bare Metal.
 
 ```
-git clone https://github.com/afsh4ck/kalipwm.git
+git clone https://github.com/4iseg/kalipwm.git
 cd kalipwm
 bash kalipwm.sh
 sudo reboot
