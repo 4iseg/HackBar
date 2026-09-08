@@ -18,7 +18,6 @@ sudo reboot
 ```
 - Una vez reiniciado cambia a bspwm en la pantalla de inicio de sesión
 - El fondo de pantalla se toma de ~/Wallpapers/wallpaper.*
-- Video completo del entorno: https://youtu.be/3clLjO8W7Q4?si=GupOi6Bqwuu2O9Wk
 
 ## Comandos
 
@@ -81,12 +80,4 @@ Neovim
 ```
 
 ## Créditos
-- Autor:       afsh4ck 
-- Instagram:   <a href="https://www.instagram.com/afsh4ck">afsh4ck</a>
-- Youtube:     <a href="https://youtube.com/@afsh4ck">afsh4ck</a>
-
-## Soporte
-
-<a href="https://www.buymeacoffee.com/afsh4ck" rel="nofollow"><img width="250" align="left">
-![buy-me-a-coffe](https://github.com/user-attachments/assets/8c8f9e81-334e-469e-b25e-29888cfc9fcc)
-</a>
+- Autor:       afsh4ck(origin)_dvdmor 
