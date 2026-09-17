@@ -35,7 +35,6 @@ echo -e "${GREEN}
 sleep 2
 echo -e "[+] Script de automatización de entorno de hacking profesional.${RESET}"
 sleep 1
-echo -e "[+] @afsh4ck - Sígueme en: YouTube, Instagram, TikTok"
 sleep 3
 echo -e "\n${BLUE}[*] Configurando la instalación..${RESET}\n"
 sleep 3
