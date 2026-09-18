@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CFG_DIR="$HOME/.config/kali-xfce-bar"
+CFG_DIR="$HOME/.config/hackbar"
 TARGET_FILE="$CFG_DIR/target"
 PLUGIN_ID_FILE="$CFG_DIR/plugin-id"
 mkdir -p "$CFG_DIR"
