@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_NAME="kali-xfce-bar"
+APP_NAME="hackbar"
 BIN_DIR="$HOME/.local/bin"
 CFG_DIR="$HOME/.config/$APP_NAME"
-INFO_BIN="$BIN_DIR/kali-panel-info"
+INFO_BIN="$BIN_DIR/hackbar-info"
 TARGET_BIN="$BIN_DIR/target"
 
 if [ "${EUID}" -eq 0 ]; then
@@ -14,11 +14,11 @@ fi
 
 if [ "${XDG_CURRENT_DESKTOP:-}" != "XFCE" ] && ! pgrep -x xfce4-panel >/dev/null 2>&1; then
   echo "[!] No parece haber una sesión XFCE activa."
-  echo "    Este proyecto está pensado para Kali Linux con XFCE."
+  echo "    HackBar está pensado para Kali Linux con XFCE."
   exit 1
 fi
 
-echo "[+] Kali XFCE Info Bar"
+echo "[+] HackBar"
 echo "[+] Comprobando dependencias..."
 
 if ! command -v xfconf-query >/dev/null 2>&1; then
@@ -34,22 +34,20 @@ fi
 mkdir -p "$BIN_DIR" "$CFG_DIR"
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-install -m 0755 "$SCRIPT_DIR/src/kali-panel-info" "$INFO_BIN"
+install -m 0755 "$SCRIPT_DIR/src/hackbar-info" "$INFO_BIN"
 install -m 0755 "$SCRIPT_DIR/src/target" "$TARGET_BIN"
 
-# Asegura ~/.local/bin en zsh y bash para que 'target' funcione directamente.
 for rc in "$HOME/.zshrc" "$HOME/.bashrc"; do
   touch "$rc"
   if ! grep -Fq 'export PATH="$HOME/.local/bin:$PATH"' "$rc"; then
-    printf '\n# Kali XFCE Info Bar\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "$rc"
+    printf '\n# HackBar\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "$rc"
   fi
 done
 
-# Evita instalar dos veces el mismo monitor.
 if [ -s "$CFG_DIR/plugin-id" ]; then
   old_id="$(cat "$CFG_DIR/plugin-id")"
   if xfconf-query -c xfce4-panel -p "/plugins/plugin-$old_id" 2>/dev/null | grep -qx 'genmon'; then
-    echo "[+] La barra ya está instalada (genmon-$old_id)."
+    echo "[+] HackBar ya está instalada (genmon-$old_id)."
     echo "[+] Scripts actualizados."
     xfce4-panel --plugin-event="genmon-$old_id:refresh:bool:true" >/dev/null 2>&1 || true
     echo "[+] Usa: target 10.0.2.22"
@@ -73,7 +71,6 @@ for id in "${plugin_ids[@]}"; do
 done
 PLUGIN_ID=$((max_id + 1))
 
-# Crea el Generic Monitor y sus propiedades.
 xfconf-query -c xfce4-panel -p "/plugins/plugin-$PLUGIN_ID" \
   -t string -s "genmon" --create
 xfconf-query -c xfce4-panel -p "/plugins/plugin-$PLUGIN_ID/command" \
@@ -87,7 +84,6 @@ xfconf-query -c xfce4-panel -p "/plugins/plugin-$PLUGIN_ID/enable-single-row" \
 xfconf-query -c xfce4-panel -p "/plugins/plugin-$PLUGIN_ID/font" \
   -t string -s "Monospace 8" --create
 
-# Inserta la barra antes del reloj si existe; así no desplaza los botones finales.
 new_ids=()
 inserted=0
 for id in "${plugin_ids[@]}"; do
@@ -116,7 +112,7 @@ xfce4-panel -r
 sleep 2
 
 echo
-echo "[+] Instalación terminada."
+echo "[+] HackBar instalada."
 echo "[+] Target:  target 10.0.2.22"
 echo "[+] Ver:     target"
 echo "[+] Borrar:  target clear"
