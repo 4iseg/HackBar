@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+set -u
+
+TARGET_FILE="$HOME/.config/hackbar/target"
+
+LOCAL_IP="$(ip -4 route get 1.1.1.1 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="src") {print $(i+1); exit}}')"
+[ -n "$LOCAL_IP" ] || LOCAL_IP="--.--.--.--"
+
+VPN_NAME=""
+VPN_IP=""
+
+if command -v nmcli >/dev/null 2>&1; then
+  VPN_NAME="$(nmcli -t -f NAME,TYPE connection show --active 2>/dev/null | awk -F: '$2=="vpn" || $2=="wireguard" {print $1; exit}')"
+fi
+
+for iface in tun0 tun1 wg0 wg1 tap0; do
+  ip_candidate="$(ip -4 addr show "$iface" 2>/dev/null | awk '/inet / {sub(/\/.*/,"",$2); print $2; exit}')"
+  if [ -n "$ip_candidate" ]; then
+    VPN_IP="$ip_candidate"
+    [ -n "$VPN_NAME" ] || VPN_NAME="$iface"
+    break
+  fi
+done
+
+if [ -s "$TARGET_FILE" ]; then
+  TARGET="$(cat "$TARGET_FILE")"
+else
+  TARGET="--.--.--.--"
+fi
+
+read -r _ u1 n1 s1 i1 w1 q1 sq1 st1 _ < /proc/stat
+idle1=$((i1 + w1))
+total1=$((u1 + n1 + s1 + i1 + w1 + q1 + sq1 + st1))
+sleep 0.12
+read -r _ u2 n2 s2 i2 w2 q2 sq2 st2 _ < /proc/stat
+idle2=$((i2 + w2))
+total2=$((u2 + n2 + s2 + i2 + w2 + q2 + sq2 + st2))
+dt=$((total2 - total1))
+di=$((idle2 - idle1))
+if [ "$dt" -gt 0 ]; then
+  CPU=$(( (100 * (dt - di)) / dt ))
+else
+  CPU=0
+fi
+
+RAM="$(free -m | awk '/Mem:/ { if ($3 >= 1024) printf "%.1fG/%.0fG", $3/1024, $2/1024; else printf "%dM/%.0fG", $3, $2/1024 }')"
+DATE_LOCAL="$(date '+%d/%m/%y')"
+TIME_LOCAL="$(date '+%H:%M')"
+TIME_UTC="$(date -u '+%H:%M')"
+
+printf '🌐 %s   ' "$LOCAL_IP"
+if [ -n "$VPN_IP" ]; then
+  printf '🔒 %s %s   ' "$VPN_NAME" "$VPN_IP"
+elif [ -n "$VPN_NAME" ]; then
+  printf '🔒 %s   ' "$VPN_NAME"
+else
+  printf '🔓 VPN OFF   '
+fi
+printf '🎯 %s   ⚙ %s%%   🧠 %s   📅 %s %s   UTC %s\n' \
+  "$TARGET" "$CPU" "$RAM" "$DATE_LOCAL" "$TIME_LOCAL" "$TIME_UTC"
