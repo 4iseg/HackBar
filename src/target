@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CFG_DIR="$HOME/.config/kali-xfce-bar"
+TARGET_FILE="$CFG_DIR/target"
+PLUGIN_ID_FILE="$CFG_DIR/plugin-id"
+mkdir -p "$CFG_DIR"
+
+refresh_bar() {
+  if [ -s "$PLUGIN_ID_FILE" ]; then
+    id="$(cat "$PLUGIN_ID_FILE")"
+    xfce4-panel --plugin-event="genmon-$id:refresh:bool:true" >/dev/null 2>&1 || true
+  fi
+}
+
+if [ $# -eq 0 ]; then
+  if [ -s "$TARGET_FILE" ]; then
+    echo "Target actual: $(cat "$TARGET_FILE")"
+  else
+    echo "No hay target configurado."
+  fi
+  exit 0
+fi
+
+if [ "$1" = "clear" ]; then
+  rm -f "$TARGET_FILE"
+  refresh_bar
+  echo "Target eliminado."
+  exit 0
+fi
+
+IP="$1"
+if ! [[ "$IP" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+  echo "[-] IPv4 no valida. Ejemplo: target 10.0.2.22"
+  exit 1
+fi
+
+IFS='.' read -r a b c d <<< "$IP"
+for octet in "$a" "$b" "$c" "$d"; do
+  if (( 10#$octet > 255 )); then
+    echo "[-] IPv4 no valida."
+    exit 1
+  fi
+done
+
+printf '%s\n' "$IP" > "$TARGET_FILE"
+refresh_bar
+echo "Target -> $IP"

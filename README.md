@@ -1,82 +1,83 @@
-# KaliPWM
+# Kali XFCE Info Bar
 
-Despliega un entorno de hacking profesional para Kali Linux ejecutando solo un script.
+Barra informativa ligera para **Kali Linux con XFCE**. Se integra en el panel superior estándar de Kali: no sustituye el menú, no instala BSPWM y no usa Polybar.
 
-<p align="center">
-  <img src="borrar.png" width="500">
-</p>
+Muestra:
 
-## Instalación y uso
+- IP local
+- estado/nombre/IP de la VPN
+- IP objetivo (target)
+- uso de CPU
+- memoria RAM usada/total
+- fecha y hora local
+- hora UTC
 
-- Hazlo sobre una instalación nueva/limpia de Kali Linux.
+## Instalación
 
-```
-git clone https://github.com/4iseg/kalipwm.git
-cd kalipwm
-bash kalipwm.sh
-sudo reboot
-```
-- Una vez reiniciado cambia a bspwm en la pantalla de inicio de sesión
+Ejecuta la instalación como tu usuario normal de Kali, **no como root**:
 
-## Comandos
-
-> [!NOTE]
-> En MacOS, cambia Windows por Command, y Alt por Option.
-
-| Comando                     | Descripción                                                 |
-|-----------------------------|-------------------------------------------------------------|
-| Clic derecho en Polybar     | Cambia el tema de Polybar usando el menú del clic derecho   |
-| Windows + 1,2,3,4           | Navega entre escritorios                                    |
-| Windows + Enter             | Abre una nueva terminal                                     |
-| Windows + Enter             | Divide la terminal actual                                   |
-| Windows + Flechas           | Navega entre ventanas abiertas                              |
-| Windows + Tab               | Cambia entre los dos escritorios más recientes              |
-| Windows + + Shift + W       | Cierra la terminal actual                                   |
-| Windows + Alt + R           | Recarga el entorno de escritorio                            |
-| Windows + Alt + Q           | Reiniciar BSPWM                                             |
-| Windows + Alt + Flechas     | Redimensiona la ventana actual                              |
-| Windows + Shift + F         | Abre Firefox                                                |
-| Windows + Shift + B         | Abre Burp Suite                                             |
-| Windows + Shift + A         | Abre el gestor de archivos Thunar                           |
-| Windows + Shift + 1,2,3,4   | Mueve la ventana actual a otro escritorio                   |
-| Windows + Shift + Flechas   | Mueve la ventana actual                                     |
-| Ctrl + Shift + -+           | Cambia el tamaño del texto en la terminal                   |
-| Ctrl + T                    | Abre un buscador avanzado desde la terminal                 |
-| .config/sxhkd/sxhkdrc       | Archivo de configuración de atajos (sxhkd)                  |
-| .config/bspwm/bspwmrc       | Archivo de configuración de BSPWM                           |
-| .config/polybar             | Carpeta con temas de Polybar                                |
-| .config/kitty/kitty.conf    | Archivo de configuración predeterminado para el terminal Kitty  |
-| ~/Wallpapers                | Carpeta de fondos de pantalla. Solo se permite un archivo llamado wallpaper.jpg  |
-| target 10.0.0.1             | Selecciona una IP de destino y se muestra en la Polybar     |
-| target reset                | Elimina el objetivo seleccionado                            |
-| tmux                        | Cambia la terminal a tmux                                   |
-| tmux —help                  | Muestra la ayuda de tmux                                    |
-| p10k configure              | Configura el tema de terminal Powerlevel10K                 |
-| .zshrc                      | Archivo de configuración de ZSH y alias de comandos         |
-| bpython                     | Python interactivo en la terminal                           |
-
-## Paquetes incluídos:
-
-```
-Bspwm
-Polybar
-Oh my zsh + Plugins
-Powerlevel10k
-Hack Nerd Fonts
-JetBrains Font
-Python + pip + bpython
-Tmux + Oh my tmux
-Kitty
-lsd
-Batcat
-Fastfetch
-Scrot
-feh
-Rofi
-Sxhkd
-Picom
-Neovim
+```bash
+git clone https://github.com/4iseg/kali-xfce-bar.git
+cd kali-xfce-bar
+chmod +x install.sh
+./install.sh
 ```
 
-## Créditos
-- Autor:       afsh4ck(origin)_dvdmor 
+El instalador añade automáticamente un **Generic Monitor** al panel XFCE y mantiene el resto de la configuración estándar de Kali.
+
+## Target
+
+Configurar la IP de la máquina que vas a auditar:
+
+```bash
+target 10.0.2.22
+```
+
+Ver el target actual:
+
+```bash
+target
+```
+
+Eliminarlo:
+
+```bash
+target clear
+```
+
+El panel se actualiza automáticamente al cambiar el target.
+
+## Ejemplo
+
+```text
+🌐 10.0.2.15   🔓 VPN OFF   🎯 10.0.2.22   ⚙ 4%   🧠 1.0G/15G   📅 18/09/26 09:15   UTC 07:15
+```
+
+Con una VPN activa:
+
+```text
+🌐 192.168.1.40   🔒 HTB 10.10.14.23   🎯 10.10.11.52   ⚙ 7%   🧠 2.8G/15G   📅 18/09/26 09:15   UTC 07:15
+```
+
+## Desinstalación
+
+```bash
+./uninstall.sh
+```
+
+El desinstalador elimina únicamente la barra y sus scripts. No desinstala `xfce4-genmon-plugin`, ya que podría estar siendo utilizado por otros elementos del panel.
+
+## Requisitos
+
+- Kali Linux
+- XFCE
+- `sudo`
+- conexión a Internet si es necesario instalar `xfce4-genmon-plugin`
+
+## Nota
+
+Está pensado para el panel XFCE estándar de Kali. El instalador intenta colocar la barra antes del reloj para no desplazar los controles situados al final del panel.
+
+## Licencia
+
+MIT.
