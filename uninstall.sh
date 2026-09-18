@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_NAME="kali-xfce-bar"
+APP_NAME="hackbar"
 CFG_DIR="$HOME/.config/$APP_NAME"
 PLUGIN_ID_FILE="$CFG_DIR/plugin-id"
 PANEL_ID_FILE="$CFG_DIR/panel-id"
@@ -31,10 +31,10 @@ if [ -s "$PLUGIN_ID_FILE" ] && [ -s "$PANEL_ID_FILE" ]; then
   xfconf-query -c xfce4-panel -p "/plugins/plugin-$PLUGIN_ID" -rR 2>/dev/null || true
 fi
 
-rm -f "$HOME/.local/bin/kali-panel-info" "$HOME/.local/bin/target"
+rm -f "$HOME/.local/bin/hackbar-info" "$HOME/.local/bin/target"
 rm -rf "$CFG_DIR"
 
 xfce4-panel -r >/dev/null 2>&1 || true
 
-echo "[+] Kali XFCE Info Bar desinstalada."
+echo "[+] HackBar desinstalada."
 echo "[i] xfce4-genmon-plugin se conserva por si lo usan otros elementos del panel."
