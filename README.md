@@ -2,6 +2,8 @@
 
 **HackBar** es una barra informativa ligera para **Kali Linux con XFCE**. Se integra en el panel superior estándar de Kali: no sustituye el menú, no instala BSPWM y no usa Polybar.
 
+**by:** dvdmor
+
 Muestra:
 
 - IP local
